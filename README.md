@@ -17,7 +17,7 @@ KClient是一个简单易用，有效集成，高性能，高稳定的Kafka Java
 简化了Kafka客户端API的使用方法, 特别是对消费端开发，消费端开发者只需要实现MessageHandler接口或者相关子类，在实现中处理消息完成业务逻辑，并且在主线程中启动封装的消费端服务器即可。它提供了各种常用的MessageHandler，框架自动转换消息到领域对象模型或者JSON对象等数据结构，让开发者更专注于业务处理。如果使用服务源码注解的方式声明消息处理机的后台，可以将一个通用的服务方法直接转变成具有完善功能的处理Kafka消息队列的处理机，使用起来极其简单，代码看起来一目了然，在框架级别通过多种线程池技术保证了处理机的高性能。
 
 在使用方面，它提供了多种使用方式：1. 直接使用Java API; 2. 与Spring环境无缝集成; 3. 服务源码注解，通过注解声明方式启动Kafka消息队列的处理机。除此之外，它基于注解提供了消息处理机的模板项目，可以根据模板项目通过配置快速开发Kafka的消息处理机。
- 
+
 **2.高性能**
 
 为了在不同的业务场景下实现高性能, 它提供不同的线程模型： 1. 适合轻量级服务的同步线程模型; 2. 适合IO密集型服务的异步线程模型（细分为所有消费者流共享线程池和每个流独享线程池）。另外，异步模型中的线程池也支持确定数量线程的线程池和线程数量可伸缩的线程池。
@@ -88,8 +88,8 @@ try {
 } finally {
 	kafkaConsumer.shutdownGracefully();
 }
- ```
- 
+```
+
 ```java
 public class DogHandler extends BeanMessageHandler<Dog> {
 	public DogHandler() {
@@ -100,7 +100,7 @@ public class DogHandler extends BeanMessageHandler<Dog> {
 		System.out.format("Receiving dog: %s\n", dog);
 	}
 }
-``` 
+```
 
 **2.Spring环境集成**
 
@@ -150,8 +150,8 @@ try {
 } finally {
 	kafkaConsumer.shutdownGracefully();
 }
- ```
- 
+```
+
 ```java
 public class DogHandler extends BeanMessageHandler<Dog> {
 	public DogHandler() {
@@ -162,8 +162,8 @@ public class DogHandler extends BeanMessageHandler<Dog> {
 		System.out.format("Receiving dog: %s\n", dog);
 	}
 }
-``` 
- 
+```
+
 ```xml
 <bean name="dogHandler" class="com.robert.kafka.kclient.sample.api.DogHandler" />
 
@@ -174,7 +174,7 @@ public class DogHandler extends BeanMessageHandler<Dog> {
 	<property name="handler" ref="dogHandler" />
 </bean>
 ```
- 
+
 **3.服务源码注解**
 
 KClient提供了类似Spring声明式的编程方法，使用注解声明Kafka处理器方法，所有的线程模型、异常处理、服务启动和关闭等都由后台服务自动完成，极大程度的简化了API的使用方法，提高了开发者的工作效率。
@@ -455,7 +455,7 @@ public class AnimalsHandler {
 		System.out.println("Annotated excepHandler handles: " + e);
 	}
 }
-``` 
+```
 3.通过`mvn package`既可以打包包含Spring Boot功能的自启动jar包。
 
 4.通过`java -jar kclient-processor.jar`即可启动服务。
@@ -536,10 +536,4 @@ Benchmark应该覆盖推送QPS，接收处理QPS以及单线程和多线程生�
 5. 实现消息发送端的可靠投递，在发送超时的时候，持久到数据库或者缓存，定时补偿发送，也就是实现Producer可以持久消息到数据库，有问题的时候，异步定时重发
 6. InputConsumer和OutputProducer中的propertiesFile有些多余，我们需要把它迁移到KafkaHandlers中，或者支持多个地方配置，或者支持具体每个属性在方法中的配置。
 7. InterruptedException和优雅关机的实现，优化关机的实现还不健全，it.hasNext()退出后，最后一个chunk没有被提交, Kafka0.8版本提交默认是30秒一次的,读出来没提交很正常
-
-## 获得技术支持
-
-联系作者：robert_lyp
-
-<a href="./resource/images/myqrcode.jpeg"><img src="./resource/images/myqrcode.jpeg" alt="cloudate-qrcode" width="150" height="190" class="alignnone size-full wp-image-1138" /></a>
 
